@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AttributeController;
-
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,19 +17,34 @@ use App\Http\Controllers\AttributeController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('home');
+})->middleware('auth');
 // Route::get('/', [ProductController::class, 'index']);
 
-// Route::prefix('product')->group(function () {
-//     Route::get('/create', [ProductController::class, 'create']);
-// });
 
-// Route::prefix('category')->group(function () {
-//     Route::get('/', [CategoryController::class, 'index']);
-//     Route::get('/create', [CategoryController::class, 'create']);
-// });
+Route::group(['middleware' => ['permission:product']], function () {
+
+    Route::prefix('product')->group(function () {
+        Route::get('/create', [ProductController::class, 'create']);
+    });
+
+    Route::middleware(['auth'])->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/', [CategoryController::class, 'index']);
+            Route::get('/create', [CategoryController::class, 'create']);
+        });
+    });
+});
+
+
+
+
+
+Route::prefix('auth')->group(function () {
+    Route::any('login', [AuthController::class, 'login'])->name('login');
+});
+
 
 // Route::prefix('attribute')->group(function () {
 //     Route::get('/', [AttributeController::class, 'index']);
@@ -36,6 +52,6 @@ use App\Http\Controllers\AttributeController;
 // });
 
 
-// Auth::routes();
+Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

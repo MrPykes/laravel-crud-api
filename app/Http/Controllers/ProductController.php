@@ -31,6 +31,7 @@ class ProductController extends Controller
     public function create()
     {
         //
+        echo "test";
     }
 
     /**

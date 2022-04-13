@@ -17,9 +17,11 @@ use App\Http\Controllers\ProductImageController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Route::group(['middleware' => ['permission:product']], function () {
 
 Route::prefix('product')->group(function () {
     Route::get('/', [ProductController::class, 'index']);
@@ -42,3 +44,5 @@ Route::prefix('attribute')->group(function () {
     Route::post('/update/{id}', [AttributeController::class, 'update']);
     Route::delete('/delete/{id}', [AttributeController::class, 'destroy']);
 });
+    
+// });
