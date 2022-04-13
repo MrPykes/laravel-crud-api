@@ -9,6 +9,7 @@ use App\Models\ProductsAttribute;
 use App\Models\ProductsCategories;
 use App\Models\ProductsImages;
 use App\Http\Resources\ProductCollection;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductController extends Controller
 {
@@ -17,9 +18,22 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('attributes', 'categories', 'images')->get();
+        // dd($request->all());
+        // $products = Product::all();
+        // $products = Product::with('attributes', 'categories', 'images')->get();
+        // $products = Product::with('attributes', 'categories', 'images')->orWhere('name', 'Color')->get();
+        // $products = Product::whereHas("attributes", function ($query) {
+        //     $query->where('value', 'red');
+        // });
+
+        $products = Product::whereHas('attributes', function ($query) {
+            $query->where('value', '128');
+        })->whereHas('categories', function ($query) {
+            $query->where('name', 'Dell');
+        })->get();
+
         return ProductCollection::collection($products);
     }
 

@@ -6,6 +6,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,24 +26,26 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('home');
 })->middleware('auth');
+
 // Route::get('/', [ProductController::class, 'index']);
 
 
 Route::group(['middleware' => ['permission:product']], function () {
-
-    Route::prefix('product')->group(function () {
-        Route::get('/create', [ProductController::class, 'create']);
-    });
-
-    Route::middleware(['auth'])->group(function () {
-        Route::prefix('category')->group(function () {
-            Route::get('/', [CategoryController::class, 'index']);
-            Route::get('/create', [CategoryController::class, 'create']);
-        });
-    });
 });
 
 
+Route::prefix('product')->group(function () {
+    Route::get('/create', [ProductController::class, 'create']);
+});
+
+Route::group(['prefix' => 'product', 'middleware' => ['auth:sanctum', 'role:admin']], function () {
+    // Route::middleware(['auth'])->group(function () {
+    Route::prefix('category')->group(function () {
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/create', [CategoryController::class, 'create']);
+    });
+    // });
+});
 
 
 

@@ -18,6 +18,11 @@ class Product extends Model
      */
     protected $fillable = ['name', 'description'];
 
+    // public function __construct($request)
+    // {
+    //     dd($request);
+    // }
+
     public function attributes()
     {
         return $this->belongsToMany(Attribute::class, 'products_attributes', 'product_id', 'attributes_id');
@@ -31,6 +36,10 @@ class Product extends Model
     {
         return $this->hasMany(ProductsImages::class);
     }
+
+
+
+
 
     public static function boot()
     {
