@@ -26,15 +26,15 @@ class UserSeeder extends Seeder
         // $permission->assignRole($role);
 
         $user = User::create([
-            'name' => 'Juan Dela Cruz',
-            'email' => 'juan@gmail.com',
+            'name' => 'Test Account User',
+            'email' => 'testuser@gmail.com',
             'password' => Hash::make('123123123'),
         ]);
         // $user->hasPermissionTo('product', 'admin');
 
         $user = User::create([
-            'name' => 'Pedro Penduko',
-            'email' => 'pedro@gmail.com',
+            'name' => 'Test Account Admin',
+            'email' => 'testadmin@gmail.com',
             'password' => Hash::make('123123123'),
         ]);
 
