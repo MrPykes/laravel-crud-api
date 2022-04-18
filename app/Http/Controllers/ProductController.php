@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Models\ProductsAttribute;
 use App\Models\ProductsCategories;
@@ -13,6 +14,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ProductController extends Controller
 {
+
+    private $attribute;
+    private $category;
+    private $name;
+
     /**
      * Display a listing of the resource.
      *
@@ -20,18 +26,16 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request->all());
-        // $products = Product::all();
-        // $products = Product::with('attributes', 'categories', 'images')->get();
-        // $products = Product::with('attributes', 'categories', 'images')->orWhere('name', 'Color')->get();
-        // $products = Product::whereHas("attributes", function ($query) {
-        //     $query->where('value', 'red');
-        // });
+        $this->attribute = $request->attribute;
+        $this->category = $request->category;
+        $this->name = $request->name;
 
-        $products = Product::whereHas('attributes', function ($query) {
-            $query->where('value', '128');
+        $products = Product::where(function ($query) {
+            if ($this->name) $query->where('name', 'LIKE', "%" . $this->name . "%");
+        })->whereHas('attributes', function ($query) {
+            if ($this->attribute) $query->where('value', $this->attribute);
         })->whereHas('categories', function ($query) {
-            $query->where('name', 'Dell');
+            if ($this->category) $query->where('name', $this->category);
         })->get();
 
         return ProductCollection::collection($products);
@@ -45,7 +49,6 @@ class ProductController extends Controller
     public function create()
     {
         //
-        echo "test";
     }
 
     /**
@@ -54,7 +57,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         $product = Product::create([
             'name' => $request->name,

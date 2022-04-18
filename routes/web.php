@@ -25,41 +25,6 @@ use Illuminate\Validation\ValidationException;
 
 Route::get('/', function () {
     return view('home');
-})->middleware('auth');
-
-// Route::get('/', [ProductController::class, 'index']);
-
-
-Route::group(['middleware' => ['permission:product']], function () {
 });
-
-
-Route::prefix('product')->group(function () {
-    Route::get('/create', [ProductController::class, 'create']);
-});
-
-Route::group(['prefix' => 'product', 'middleware' => ['auth:sanctum', 'role:admin']], function () {
-    // Route::middleware(['auth'])->group(function () {
-    Route::prefix('category')->group(function () {
-        Route::get('/', [CategoryController::class, 'index']);
-        Route::get('/create', [CategoryController::class, 'create']);
-    });
-    // });
-});
-
-
-
-Route::prefix('auth')->group(function () {
-    Route::any('login', [AuthController::class, 'login'])->name('login');
-});
-
-
-// Route::prefix('attribute')->group(function () {
-//     Route::get('/', [AttributeController::class, 'index']);
-//     Route::get('/create', [AttributeController::class, 'create']);
-// });
-
 
 Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

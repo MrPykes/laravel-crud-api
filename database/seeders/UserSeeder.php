@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $role = Role::create(['name' => 'admin']);
         $permission = Permission::create(['name' => 'product']);
 
-        $role->givePermissionTo($permission);
+
         // $permission->assignRole($role);
 
         $user = User::create([
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('123123123'),
         ]);
 
-        $user->givePermissionTo('product');
-        // $user->givePermissionTo('admin');
+        $user->givePermissionTo($permission);
+        $user->assignRole($role);
     }
 }

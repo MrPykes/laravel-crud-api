@@ -5,23 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\UserResource;
-// use App\Services\ResponseHandler\ResponseService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\UserRequest;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Login.
      *
@@ -30,25 +19,15 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-
         $request->validate([
             'email' => 'required',
             'password' => 'required',
         ]);
 
         $credentials = $request->only('email', 'password');
-        // dd($request->_token);
         if (Auth::attempt($credentials)) {
             $userID = Auth::user();
-            // $user = User::find($userID);
-            // $token = $user->createToken('user-token')->plainTextToken;
-            // dd($token);
             if ($userID) {
-
-                $request->validate([
-                    'email' => 'required|email',
-                    'password' => 'required',
-                ]);
 
                 $user = User::where('email', $request->email)->first();
 
@@ -57,17 +36,9 @@ class AuthController extends Controller
                         'email' => ['The provided credentials are incorrect.'],
                     ]);
                 }
+                $data['token'] =  $user->createToken('user-token')->plainTextToken;
 
-                $token =  $user->createToken('user-token')->plainTextToken;
-                dd($token);
-                // $user->createToken('Token Name')->accessToken;
-                // if ($userResource->withSession === null) {
-
-                //     // Create user token to be used for future requests.
-                //     $data['token'] = $this->createToken('user-token')->plainTextToken;
-                //     dd($data['token']);
-                // }
-                // return ResponseService::success($userResource, __('success.auth.login'));
+                return $data;
             } else {
                 return response()->json([
                     "message" => "invalid credentials",
@@ -75,7 +46,7 @@ class AuthController extends Controller
             }
         } else {
             return response()->json([
-                "message" => "invalid credentials12313",
+                "message" => "invalid credentials",
             ]);
         }
     }

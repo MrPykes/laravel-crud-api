@@ -7,6 +7,8 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,27 +25,35 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::group(['middleware' => ['permission:product']], function () {
-Route::prefix('product')->group(function () {
-    Route::post('/', [ProductController::class, 'index']);
-    // Route::middleware(['permission:product'])->get('/', [ProductController::class, 'index']);
-    Route::post('/store', [ProductController::class, 'store']);
-    Route::post('/update/{id}', [ProductController::class, 'update']);
-    Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
+Route::group(['middleware' => ['auth:sanctum', 'permission:product']], function () {
+    Route::prefix('product')->group(function () {
+        Route::post('/', [ProductController::class, 'index']);
+        Route::post('/store', [ProductController::class, 'store']);
+        Route::post('/update/{id}', [ProductController::class, 'update']);
+        Route::delete('/delete/{id}', [ProductController::class, 'destroy']);
+    });
+
+    Route::prefix('category')->group(function () {
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::post('/store', [CategoryController::class, 'store']);
+        Route::post('/update/{id}', [CategoryController::class, 'update']);
+        Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
+    });
+
+    Route::prefix('attribute')->group(function () {
+        Route::get('/', [AttributeController::class, 'index']);
+        Route::post('/store', [AttributeController::class, 'store']);
+        Route::post('/update/{id}', [AttributeController::class, 'update']);
+        Route::delete('/delete/{id}', [AttributeController::class, 'destroy']);
+    });
 });
 
-Route::prefix('category')->group(function () {
-    Route::get('/', [CategoryController::class, 'index']);
-    Route::post('/store', [CategoryController::class, 'store']);
-    Route::post('/update/{id}', [CategoryController::class, 'update']);
-    Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
+Route::prefix('user')->group(function () {
+    Route::post('store', [UserController::class, 'store'])->name('user.store');
+    Route::post('update/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::delete('delete/{id}', [UserController::class, 'destroy'])->name('user.delete');
 });
 
-
-Route::prefix('attribute')->group(function () {
-    Route::get('/', [AttributeController::class, 'index']);
-    Route::post('/store', [AttributeController::class, 'store']);
-    Route::post('/update/{id}', [AttributeController::class, 'update']);
-    Route::delete('/delete/{id}', [AttributeController::class, 'destroy']);
+Route::prefix('auth')->group(function () {
+    Route::any('login', [AuthController::class, 'login'])->name('login');
 });
-// });
