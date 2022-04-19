@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum', 'permission:product']], function 
 });
 
 Route::prefix('user')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('user.index');
     Route::post('store', [UserController::class, 'store'])->name('user.store');
     Route::post('update/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('delete/{id}', [UserController::class, 'destroy'])->name('user.delete');
@@ -56,4 +57,10 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('auth')->group(function () {
     Route::any('login', [AuthController::class, 'login'])->name('login');
+});
+
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Page Not Found. If error persists'
+    ], 404);
 });

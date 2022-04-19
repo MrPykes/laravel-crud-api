@@ -33,8 +33,8 @@ class ProductSeeder extends Seeder
             'description' => 'Lenovo Description',
         ]);
         Category::create([
-            'name' => 'Lenovo',
-            'description' => 'Lenovo Description',
+            'name' => 'Dell',
+            'description' => 'Dell Description',
         ]);
     }
 }

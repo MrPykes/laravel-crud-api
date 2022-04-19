@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\ProductImageController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -18,28 +17,19 @@ class Product extends Model
      */
     protected $fillable = ['name', 'description'];
 
-    // public function __construct($request)
-    // {
-    //     dd($request);
-    // }
-
     public function attributes()
     {
-        return $this->belongsToMany(Attribute::class, 'products_attributes', 'product_id', 'attributes_id');
+        return $this->belongsToMany(Attribute::class, 'product_attributes', 'product_id', 'attributes_id');
     }
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'products_categories', 'product_id', 'categories_id');
+        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'categories_id');
     }
     public function images()
     {
-        return $this->hasMany(ProductsImages::class);
+        return $this->hasMany(ProductImages::class);
     }
-
-
-
-
 
     public static function boot()
     {

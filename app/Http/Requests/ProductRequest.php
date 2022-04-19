@@ -31,7 +31,6 @@ class ProductRequest extends FormRequest
     }
     public function messages()
     {
-
         return  [
             'name.*' => 'invalid data',
             'images.*' => 'invalid data',

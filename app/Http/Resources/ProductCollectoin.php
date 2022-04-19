@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductCollection extends JsonResource
@@ -43,6 +42,7 @@ class ProductCollection extends JsonResource
         }
 
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'attributes' => $attributes,

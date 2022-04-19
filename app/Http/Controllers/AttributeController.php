@@ -40,6 +40,10 @@ class AttributeController extends Controller
             'name' => $request->name,
             'value' => $request->value,
         ]);
+
+        return response()->json([
+            "message" => "Attribute Succesfully Created",
+        ], 200);
     }
 
     /**
@@ -78,6 +82,9 @@ class AttributeController extends Controller
                 'name' => $request->name,
                 'value' => $request->value
             ]);
+        return response()->json([
+            "message" => "Attribute Succesfully Updated",
+        ], 200);
     }
 
     /**
@@ -90,5 +97,9 @@ class AttributeController extends Controller
     {
         $attribute = Attribute::find($id);
         $attribute->delete();
+
+        return response()->json([
+            "message" => "Attribute Succesfully Deleted",
+        ], 200);
     }
 }

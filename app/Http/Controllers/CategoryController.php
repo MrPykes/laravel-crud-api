@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -40,6 +39,9 @@ class CategoryController extends Controller
             'name' => $request->name,
             'description' => $request->description,
         ]);
+        return response()->json([
+            "message" => "Category Succesfully Created",
+        ], 200);
     }
 
     /**
@@ -78,6 +80,9 @@ class CategoryController extends Controller
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
+        return response()->json([
+            "message" => "Category Succesfully Updated",
+        ], 200);
     }
 
     /**
@@ -90,5 +95,8 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->delete();
+        return response()->json([
+            "message" => "Category Succesfully Deleted",
+        ], 200);
     }
 }

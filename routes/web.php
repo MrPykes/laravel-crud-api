@@ -1,16 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\AttributeController;
-use App\Http\Controllers\AuthController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +14,5 @@ use Illuminate\Validation\ValidationException;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
-
-Auth::routes();

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        return User::all();
+    }
 
     /**
      *
@@ -27,6 +28,10 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        return response()->json([
+            "message" => "User Succesfully Created",
+        ], 200);
     }
 
     /**
@@ -43,21 +48,9 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-
-
-
-        // if ($request->permission) {
-        //     if ($permission = Permission::where('name', $request->permission)->get()) {
-        //         $user->revokePermissionTo($permission);
-        //         $permission = Permission::where('name', $request->permission)->get();
-        //     } else {
-        //         $permission = Permission::create(['name' => $request->permission]);
-        //     }
-        //     $user->syncPermissions($permission);
-        // }
-
-
-        // if ($request->role) $user->assignRole($request->role);
+        return response()->json([
+            "message" => "User Succesfully Updated",
+        ], 200);
     }
 
     /**
@@ -70,5 +63,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
+        return response()->json([
+            "message" => "User Succesfully Deleted",
+        ], 200);
     }
 }

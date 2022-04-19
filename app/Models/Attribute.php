@@ -21,6 +21,6 @@ class Attribute extends Model
 
     public function get_attribute()
     {
-        return $this->belongsToMany(ProductsAttribute::class);
+        return $this->belongsToMany(ProductAttribute::class);
     }
 }
